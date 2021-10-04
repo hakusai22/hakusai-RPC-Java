@@ -21,19 +21,22 @@ import java.util.Set;
  * @author xizizzz
  */
 public class NacosUtil {
-
+    //日志
     private static final Logger logger = LoggerFactory.getLogger(NacosUtil.class);
-
+    // nacos的命名服务
     private static final NamingService namingService;
     private static final Set<String> serviceNames = new HashSet<>();
+    //IP地址+端口号
     private static InetSocketAddress address;
+    //默认服务注册地址
+    private static final String SERVER_ADDR = "127.0.0.1:8848";
 
-    private static final String SERVER_ADDR = "112.74.164.23:8848";
-
+    //连接的过程写在了静态代码块中，在类加载时自动连接。
     static {
         namingService = getNacosNamingService();
     }
 
+    //通过 NamingFactory 创建 NamingService 连接 Nacos
     public static NamingService getNacosNamingService() {
         try {
             return NamingFactory.createNamingService(SERVER_ADDR);
@@ -43,21 +46,27 @@ public class NacosUtil {
         }
     }
 
+    //注册服务
     public static void registerService(String serviceName, InetSocketAddress address) throws NacosException {
+        //可以直接向 Nacos 注册服务
         namingService.registerInstance(serviceName, address.getHostName(), address.getPort());
         NacosUtil.address = address;
         serviceNames.add(serviceName);
-
     }
 
+    //获取全部的实例
     public static List<Instance> getAllInstance(String serviceName) throws NacosException {
+        //可以获得提供某个服务的所有提供者的列表
         return namingService.getAllInstances(serviceName);
     }
 
+    //首先先写向 Nacos 注销所有服务的方法，这部分被放在了 NacosUtils 中作为一个静态方法，
     public static void clearRegistry() {
         if(!serviceNames.isEmpty() && address != null) {
             String host = address.getHostName();
             int port = address.getPort();
+            // 所有的服务名称都被存储在 NacosUtils 类中的 serviceNames 中
+            // 在注销时只需要用迭代器迭代所有服务名，调用 deregisterInstance 即可。
             Iterator<String> iterator = serviceNames.iterator();
             while(iterator.hasNext()) {
                 String serviceName = iterator.next();

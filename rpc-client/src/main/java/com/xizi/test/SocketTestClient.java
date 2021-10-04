@@ -11,7 +11,7 @@ import com.xizi.rpc.transport.socket.client.SocketClient;
 /**
  * 测试用消费者（客户端）
  *
- * @author ziyang
+ * @author xizizzz
  */
 public class SocketTestClient {
 

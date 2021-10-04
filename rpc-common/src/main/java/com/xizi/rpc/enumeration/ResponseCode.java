@@ -5,7 +5,6 @@ import lombok.Getter;
 
 /**
  * 方法调用的响应状态码
- *
  * @author xizizzz
  */
 @AllArgsConstructor

@@ -7,6 +7,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * 未处理的请求
  * @author xizizzz
  */
 public class UnprocessedRequests {

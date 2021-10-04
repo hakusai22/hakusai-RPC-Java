@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 单例工厂
+ * 封装静态单例工厂
  * @author xizizzz
  */
 public class SingletonFactory {

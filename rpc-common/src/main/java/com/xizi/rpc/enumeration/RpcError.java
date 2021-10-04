@@ -5,8 +5,7 @@ import lombok.Getter;
 
 /**
  * RPC调用过程中的错误
- *
- * @author ziyang
+ * @author xizizzz
  */
 @AllArgsConstructor
 @Getter

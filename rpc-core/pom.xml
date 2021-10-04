@@ -27,6 +27,8 @@
             <artifactId>netty-all</artifactId>
             <version>${netty-version}</version>
         </dependency>
+
+        <!--json序列化-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -42,16 +44,19 @@
             <artifactId>jackson-annotations</artifactId>
             <version>2.11.0</version>
         </dependency>
+        <!--kryo序列化-->
         <dependency>
             <groupId>com.esotericsoftware</groupId>
             <artifactId>kryo</artifactId>
             <version>4.0.2</version>
         </dependency>
+        <!--hessian序列化-->
         <dependency>
             <groupId>com.caucho</groupId>
             <artifactId>hessian</artifactId>
             <version>4.0.63</version>
         </dependency>
+        <!--protostuff-->
         <dependency>
             <groupId>io.protostuff</groupId>
             <artifactId>protostuff-core</artifactId>
@@ -62,6 +67,7 @@
             <artifactId>protostuff-runtime</artifactId>
             <version>1.7.2</version>
         </dependency>
+        <!--Nacos注册中心-->
         <dependency>
             <groupId>com.alibaba.nacos</groupId>
             <artifactId>nacos-client</artifactId>

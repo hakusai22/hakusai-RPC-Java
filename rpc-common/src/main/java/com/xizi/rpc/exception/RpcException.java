@@ -5,7 +5,6 @@ import com.xizi.rpc.enumeration.RpcError;
 
 /**
  * RPC调用异常
- *
  * @author xizizzz
  */
 public class RpcException extends RuntimeException {
