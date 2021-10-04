@@ -27,7 +27,7 @@ import java.net.Socket;
 /**
  * Socket方式远程方法调用的消费者（客户端）
  *
- * @author ziyang
+ * @author xizizzz
  */
 public class SocketClient implements RpcClient {
 

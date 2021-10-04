@@ -16,7 +16,6 @@ import java.util.concurrent.ExecutorService;
 
 /**
  * Socket方式远程方法调用的提供者（服务端）
- *
  * @author xizizzz
  */
 public class SocketServer extends AbstractRpcServer {

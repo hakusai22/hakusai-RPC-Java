@@ -11,7 +11,7 @@ import com.xizi.rpc.transport.socket.client.SocketClient;
 /**
  * 测试用消费者（客户端）
  *
- * @author ziyang
+ * @author xizizzz
  */
 public class SocketTestClient {
 
@@ -19,11 +19,11 @@ public class SocketTestClient {
         SocketClient client = new SocketClient(CommonSerializer.KRYO_SERIALIZER);
         RpcClientProxy proxy = new RpcClientProxy(client);
         HelloService helloService = proxy.getProxy(HelloService.class);
-        HelloObject object = new HelloObject(12, "戏子66666");
+        HelloObject object = new HelloObject(12, "Client发送信息: remake");
         String res = helloService.hello(object);
         System.out.println(res);
         ByeService byeService = proxy.getProxy(ByeService.class);
-        System.out.println(byeService.bye("Netty"));
+        System.out.println(byeService.bye("remake"));
     }
 
 }

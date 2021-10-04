@@ -28,10 +28,14 @@ public class ChannelProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(ChannelProvider.class);
     private static EventLoopGroup eventLoopGroup;
+
+    //创建bootstrap
     private static Bootstrap bootstrap = initializeBootstrap();
 
+    //本地缓存
     private static Map<String, Channel> channels = new ConcurrentHashMap<>();
 
+    //用于获取 Channel 对象
     public static Channel get(InetSocketAddress inetSocketAddress, CommonSerializer serializer) throws InterruptedException {
         String key = inetSocketAddress.toString() + serializer.getCode();
         if (channels.containsKey(key)) {
@@ -45,21 +49,26 @@ public class ChannelProvider {
         bootstrap.handler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel ch) {
-                /*自定义序列化编解码器*/
+                ///自定义序列化编解码器
                 // RpcResponse -> ByteBuf
                 ch.pipeline().addLast(new CommonEncoder(serializer))
+                        //客户端心跳机制,隔5秒进行判断是否有写事件是否发生 0表示不检测
                         .addLast(new IdleStateHandler(0, 5, 0, TimeUnit.SECONDS))
+                        //添加解码器
                         .addLast(new CommonDecoder())
+                        //添加客户端处理器
                         .addLast(new NettyClientHandler());
             }
         });
         Channel channel = null;
         try {
+            //进行连接
             channel = connect(bootstrap, inetSocketAddress);
         } catch (ExecutionException e) {
             logger.error("连接客户端时有错误发生", e);
             return null;
         }
+        //将通道放入本地缓存中
         channels.put(key, channel);
         return channel;
     }

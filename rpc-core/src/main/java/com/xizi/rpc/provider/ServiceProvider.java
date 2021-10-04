@@ -6,9 +6,9 @@ package com.xizi.rpc.provider;
  */
 public interface ServiceProvider {
 
-
+    //本地服务表添加服务提供者
     <T> void addServiceProvider(T service, String serviceName);
-
+    //本地服务表获取服务提供者
     Object getServiceProvider(String serviceName);
 
 }

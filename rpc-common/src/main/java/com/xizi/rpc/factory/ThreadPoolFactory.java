@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.concurrent.*;
 
 /**
- * 创建 ThreadPool(线程池) 的工具类
+ * 创建 自定义ThreadPool(线程池) 的工具类
  *
  * @author xizizzz
  */
@@ -23,7 +23,7 @@ public class ThreadPoolFactory {
 
     private final static Logger logger = LoggerFactory.getLogger(ThreadPoolFactory.class);
 
-    private static Map<String, ExecutorService> threadPollsMap = new ConcurrentHashMap<>();
+    private static Map<String, ExecutorService> threadPoolsMap = new ConcurrentHashMap<>();
 
     private ThreadPoolFactory() {
     }
@@ -33,19 +33,18 @@ public class ThreadPoolFactory {
     }
 
     public static ExecutorService createDefaultThreadPool(String threadNamePrefix, Boolean daemon) {
-        ExecutorService pool = threadPollsMap.computeIfAbsent(threadNamePrefix, k -> createThreadPool(threadNamePrefix, daemon));
+        ExecutorService pool = threadPoolsMap.computeIfAbsent(threadNamePrefix, k -> createThreadPool(threadNamePrefix, daemon));
         if (pool.isShutdown() || pool.isTerminated()) {
-            threadPollsMap.remove(threadNamePrefix);
+            threadPoolsMap.remove(threadNamePrefix);
             pool = createThreadPool(threadNamePrefix, daemon);
-            threadPollsMap.put(threadNamePrefix, pool);
+            threadPoolsMap.put(threadNamePrefix, pool);
         }
         return pool;
-
     }
 
     public static void shutDownAll() {
         logger.info("关闭所有线程池...");
-        threadPollsMap.entrySet().parallelStream().forEach(entry -> {
+        threadPoolsMap.entrySet().parallelStream().forEach(entry -> {
             ExecutorService executorService = entry.getValue();
             executorService.shutdown();
             logger.info("关闭线程池 [{}] [{}]", entry.getKey(), executorService.isTerminated());
@@ -67,7 +66,6 @@ public class ThreadPoolFactory {
 
     /**
      * 创建 ThreadFactory 。如果threadNamePrefix不为空则使用自建ThreadFactory，否则使用defaultThreadFactory
-     *
      * @param threadNamePrefix 作为创建的线程名字的前缀
      * @param daemon           指定是否为 Daemon Thread(守护线程)
      * @return ThreadFactory
@@ -80,7 +78,6 @@ public class ThreadPoolFactory {
                 return new ThreadFactoryBuilder().setNameFormat(threadNamePrefix + "-%d").build();
             }
         }
-
         return Executors.defaultThreadFactory();
     }
 

@@ -8,10 +8,10 @@ import com.xizi.rpc.transport.netty.server.NettyServer;
 
 /**
  * 测试用Netty服务提供者（服务端）
- *
+ * @ServiceScan 自定义服务扫描注解
  * @author xizizzz
  */
-@ServiceScan
+@ServiceScan // 并且在服务器启动类上加上注解
 public class NettyTestServer {
 
     public static void main(String[] args) {

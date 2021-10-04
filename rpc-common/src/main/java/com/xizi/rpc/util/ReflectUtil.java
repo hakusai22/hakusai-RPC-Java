@@ -13,16 +13,21 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 /**
+ * 工具类 ReflectUtil
  * @author xizizzz
  */
 public class ReflectUtil {
 
     public static String getStackTrace() {
         StackTraceElement[] stack = new Throwable().getStackTrace();
+        //获取栈底的元素main方法
         return stack[stack.length - 1].getClassName();
     }
 
+    // 主要就是 getClasses 方法，传入一个包名
+    // 用于扫描该包及其子包下所有的类，并将其 Class 对象放入一个 Set 中返回。
     public static Set<Class<?>> getClasses(String packageName) {
+        //linkedhashset存放 class对象
         Set<Class<?>> classes = new LinkedHashSet<>();
         boolean recursive = true;
         String packageDirName = packageName.replace('.', '/');
@@ -41,8 +46,7 @@ public class ReflectUtil {
                     // 获取包的物理路径
                     String filePath = URLDecoder.decode(url.getFile(), "UTF-8");
                     // 以文件的方式扫描整个包下的文件 并添加到集合中
-                    findAndAddClassesInPackageByFile(packageName, filePath,
-                            recursive, classes);
+                    findAndAddClassesInPackageByFile(packageName, filePath, recursive, classes);
                 } else if ("jar".equals(protocol)) {
                     // 如果是jar包文件
                     // 定义一个JarFile
@@ -83,9 +87,7 @@ public class ReflectUtil {
                                                         .length() - 6);
                                         try {
                                             // 添加到classes
-                                            classes.add(Class
-                                                    .forName(packageName + '.'
-                                                            + className));
+                                            classes.add(Class.forName(packageName + '.' + className));
                                         } catch (ClassNotFoundException e) {
                                             // log
                                             // .error("添加用户自定义视图类错误 找不到此类的.class文件");
@@ -129,9 +131,7 @@ public class ReflectUtil {
         for (File file : dirfiles) {
             // 如果是目录 则继续扫描
             if (file.isDirectory()) {
-                findAndAddClassesInPackageByFile(packageName + "."
-                                + file.getName(), file.getAbsolutePath(), recursive,
-                        classes);
+                findAndAddClassesInPackageByFile(packageName + "." + file.getName(), file.getAbsolutePath(), recursive, classes);
             } else {
                 // 如果是java类文件 去掉后面的.class 只留下类名
                 String className = file.getName().substring(0,

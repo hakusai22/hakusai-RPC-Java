@@ -10,6 +10,7 @@ import lombok.Getter;
 @Getter
 public enum PackageType {
 
+    //请求和响应包
     REQUEST_PACK(0),
     RESPONSE_PACK(1);
 

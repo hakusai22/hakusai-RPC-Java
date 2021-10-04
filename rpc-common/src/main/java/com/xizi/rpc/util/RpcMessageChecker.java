@@ -10,8 +10,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * 检查响应与请求
- *
+ * 检查响应与请求工具类
  * @author xizizzz
  */
 public class RpcMessageChecker {
@@ -23,6 +22,7 @@ public class RpcMessageChecker {
     }
 
     public static void check(RpcRequest rpcRequest, RpcResponse rpcResponse) {
+        //返回为null 则是调用失败
         if (rpcResponse == null) {
             logger.error("调用服务失败,serviceName:{}", rpcRequest.getInterfaceName());
             throw new RpcException(RpcError.SERVICE_INVOCATION_FAILURE, INTERFACE_NAME + ":" + rpcRequest.getInterfaceName());

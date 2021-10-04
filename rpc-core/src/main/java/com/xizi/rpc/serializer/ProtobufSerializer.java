@@ -16,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ProtobufSerializer implements CommonSerializer {
 
+    // 分配具有指定大小512的新缓冲区。
     private LinkedBuffer buffer = LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE);
     private Map<Class<?>, Schema<?>> schemaCache = new ConcurrentHashMap<>();
 
