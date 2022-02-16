@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 
 import java.net.InetSocketAddress;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -74,7 +75,7 @@ public class NettyClient implements RpcClient {
     //客户端根据请求参数发送请求
     @Override
     public CompletableFuture<RpcResponse> sendRequest(RpcRequest rpcRequest) {
-        if (serializer == null) {
+        if (Objects.isNull(serializer)) {
             logger.error("未设置序列化器");
             throw new RpcException(RpcError.SERIALIZER_NOT_FOUND);
         }
@@ -86,6 +87,7 @@ public class NettyClient implements RpcClient {
             // 根据InetSocketAddress和序列化调用get()获取Channel
             Channel channel = ChannelProvider.get(inetSocketAddress, serializer);
             //判读channel通道是否活跃
+            assert channel != null;
             if (!channel.isActive()) {
                 group.shutdownGracefully();
                 return null;
@@ -95,7 +97,7 @@ public class NettyClient implements RpcClient {
             //监听通道发送的数据
             channel.writeAndFlush(rpcRequest).addListener((ChannelFutureListener) future1 -> {
                 if (future1.isSuccess()) {
-                    logger.info(String.format("客户端发送消息: %s", rpcRequest.toString()));
+                    logger.info(String.format("客户端发送消息: %s", rpcRequest));
                 } else {
                     future1.channel().close();
                     resultFuture.completeExceptionally(future1.cause());

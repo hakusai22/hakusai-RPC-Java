@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 自定义 RPC客户端动态代理
@@ -44,7 +45,7 @@ public class RpcClientProxy implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
         logger.info("调用方法: {}#{}", method.getDeclaringClass().getName(), method.getName());
-        //封装RpcRequest请求
+        //封装RpcRequest请求 不是心跳包
         RpcRequest rpcRequest = new RpcRequest(UUID.randomUUID().toString(), method.getDeclaringClass().getName(),
                 method.getName(), args, method.getParameterTypes(), false);
         RpcResponse rpcResponse = null;
@@ -53,7 +54,8 @@ public class RpcClientProxy implements InvocationHandler {
             try {
                 //使用 CompletableFuture 异步接收客户端返回结果
                 CompletableFuture<RpcResponse> completableFuture = (CompletableFuture<RpcResponse>) client.sendRequest(rpcRequest);
-                rpcResponse = completableFuture.get();
+                rpcResponse = completableFuture.get(5, TimeUnit.SECONDS);
+                logger.info("调用sendRequest方法返回结果: {}",rpcResponse);
             } catch (Exception e) {
                 logger.error("方法调用请求发送失败", e);
                 return null;

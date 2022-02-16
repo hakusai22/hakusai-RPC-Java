@@ -21,11 +21,12 @@ import org.slf4j.LoggerFactory;
  */
 public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
     private static final Logger logger = LoggerFactory.getLogger(NettyServerHandler.class);
+
     //服务端的请求处理器(封装了方法的执行)
     private final RequestHandler requestHandler;
 
     public NettyServerHandler() {
-        //使用自定义单例工厂创建
+        //使用自定义单例工厂创建请求处理对象
         this.requestHandler = SingletonFactory.getInstance(RequestHandler.class);
     }
 
@@ -37,7 +38,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RpcRequest msg) throws Exception {
         try {
-            //判断请求是否有心跳包
+            //判断请求是否是心跳包
             if(msg.getHeartBeat()) {
                 logger.info("接收到客户端心跳包...");
                 return;
@@ -45,6 +46,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
             logger.info("服务器接收到请求: {}", msg);
             //RpcRequest请求的接口名称获取服务 进行调用目标方法invoke()
             Object result = requestHandler.handle(msg);
+            logger.info("结果: {}", result);
             //判断通道是否可用
             if (ctx.channel().isActive() && ctx.channel().isWritable()) {
                 // 将result结果数据写到通道中去

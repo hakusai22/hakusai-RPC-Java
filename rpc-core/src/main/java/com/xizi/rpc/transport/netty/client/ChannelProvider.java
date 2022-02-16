@@ -60,7 +60,7 @@ public class ChannelProvider {
                         .addLast(new NettyClientHandler());
             }
         });
-        Channel channel = null;
+        Channel channel;
         try {
             //进行连接
             channel = connect(bootstrap, inetSocketAddress);

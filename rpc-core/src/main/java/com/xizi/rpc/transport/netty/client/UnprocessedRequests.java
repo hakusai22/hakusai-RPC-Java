@@ -7,7 +7,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 未处理的请求
+ * 未处理的请求map
  * @author xizizzz
  */
 public class UnprocessedRequests {
@@ -22,6 +22,7 @@ public class UnprocessedRequests {
         unprocessedResponseFutures.remove(requestId);
     }
 
+    //从本地未处理的表删除服务端已经处理的请求
     public void complete(RpcResponse rpcResponse) {
         CompletableFuture<RpcResponse> future = unprocessedResponseFutures.remove(rpcResponse.getRequestId());
         if (null != future) {

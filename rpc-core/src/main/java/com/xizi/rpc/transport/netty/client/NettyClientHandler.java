@@ -16,25 +16,29 @@ import org.slf4j.LoggerFactory;
 
 
 import java.net.InetSocketAddress;
+import java.util.Objects;
 
 /**
  * Netty客户端侧处理器
  * @author xizizzz
  */
 public class NettyClientHandler extends SimpleChannelInboundHandler<RpcResponse> {
+
     private static final Logger logger = LoggerFactory.getLogger(NettyClientHandler.class);
+    //单例工厂创建未处理的请求
     private final UnprocessedRequests unprocessedRequests;
+
     public NettyClientHandler() {
         this.unprocessedRequests = SingletonFactory.getInstance(UnprocessedRequests.class);
     }
 
-   //当通道有读取事件 会触发
+   // 当通道channel有读取事件 会触发
    // channel 将 RpcRequest 对象写出 并且等待服务端返回的结果RpcResponse。
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, RpcResponse msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, RpcResponse msg) {
         try {
             logger.info(String.format("客户端接收到消息: %s", msg));
-            //未处理的请求完成
+            //本地map根据request_id删除未处理的请求,并且从map中拿到CompletableFuture<RpcResponse> future进行执行complete(msg)将客户端接收到的消息返回
             unprocessedRequests.complete(msg);
         } finally {
             ReferenceCountUtil.release(msg);
@@ -43,7 +47,7 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<RpcResponse>
 
     //异常发送ChannelHandler
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         logger.error("过程调用时有错误发生:");
         cause.printStackTrace();
         ctx.close();
@@ -56,10 +60,11 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<RpcResponse>
             IdleState state = ((IdleStateEvent) evt).state();
             if (state == IdleState.WRITER_IDLE) {
                 logger.info("发送心跳包 [{}]", ctx.channel().remoteAddress());
-                Channel channel = ChannelProvider.get((InetSocketAddress) ctx.channel().remoteAddress(), CommonSerializer.getByCode(CommonSerializer.DEFAULT_SERIALIZER));
+                Channel channel = ChannelProvider.get((InetSocketAddress) ctx.channel().remoteAddress(), Objects.requireNonNull(CommonSerializer.getByCode(CommonSerializer.DEFAULT_SERIALIZER)));
                 RpcRequest rpcRequest = new RpcRequest();
                 //设置心跳包为true
                 rpcRequest.setHeartBeat(true);
+                assert channel != null;
                 channel.writeAndFlush(rpcRequest).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
             }
         } else {

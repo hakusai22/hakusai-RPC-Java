@@ -13,7 +13,7 @@ public class RequestHandler {
     public Object handle(RpcRequest rpcRequest, Object service) {
         Object result = null;
         try {
-            //调用下面的方法
+            //反射调用下面的方法
             result = invokeTargetMethod(rpcRequest, service);
             logger.info("服务:{} 成功调用方法:{}", rpcRequest.getInterfaceName(), rpcRequest.getMethodName());
         } catch (IllegalAccessException | InvocationTargetException e) {
