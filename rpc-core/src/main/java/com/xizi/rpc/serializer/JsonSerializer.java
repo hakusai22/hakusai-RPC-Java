@@ -21,7 +21,7 @@ public class JsonSerializer implements CommonSerializer {
 
     private static final Logger logger = LoggerFactory.getLogger(JsonSerializer.class);
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
 
     @Override

@@ -59,7 +59,7 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<RpcResponse>
         if (evt instanceof IdleStateEvent) {
             IdleState state = ((IdleStateEvent) evt).state();
             if (state == IdleState.WRITER_IDLE) {
-                logger.info("发送心跳包 [{}]", ctx.channel().remoteAddress());
+                logger.info("客户端发送心跳包 [{}]", ctx.channel().remoteAddress());
                 Channel channel = ChannelProvider.get((InetSocketAddress) ctx.channel().remoteAddress(), Objects.requireNonNull(CommonSerializer.getByCode(CommonSerializer.DEFAULT_SERIALIZER)));
                 RpcRequest rpcRequest = new RpcRequest();
                 //设置心跳包为true
