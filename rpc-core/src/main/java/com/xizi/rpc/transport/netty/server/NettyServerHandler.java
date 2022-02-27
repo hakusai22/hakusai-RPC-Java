@@ -34,7 +34,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
         1. ChannelHandlerContext 上下文对象 含有管道pipline 通道channel 地址
         2. msg 客户端发送的数据
      */
-    //当服务端接收到请求就会触发
+    //当服务端接收到RpcRequest请求就会触发
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RpcRequest msg) throws Exception {
         try {

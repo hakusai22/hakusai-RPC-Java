@@ -52,9 +52,9 @@ public class RpcClientProxy implements InvocationHandler {
         //Netty协议
         if (client instanceof NettyClient) {
             try {
-                //使用 CompletableFuture 异步接收客户端返回结果
+                //使用 CompletableFuture 异步接收服务端返回结果
                 CompletableFuture<RpcResponse> completableFuture = (CompletableFuture<RpcResponse>) client.sendRequest(rpcRequest);
-                rpcResponse = completableFuture.get(5, TimeUnit.SECONDS);
+                rpcResponse = completableFuture.get();
                 logger.info("调用sendRequest方法返回结果: {}",rpcResponse);
             } catch (Exception e) {
                 logger.error("方法调用请求发送失败", e);

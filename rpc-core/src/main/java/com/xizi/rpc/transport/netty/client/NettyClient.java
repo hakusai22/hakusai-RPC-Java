@@ -97,7 +97,7 @@ public class NettyClient implements RpcClient {
             //监听通道发送的数据
             channel.writeAndFlush(rpcRequest).addListener((ChannelFutureListener) future1 -> {
                 if (future1.isSuccess()) {
-                    logger.info(String.format("客户端发送消息: %s", rpcRequest));
+                    logger.info(String.format("客户端成功发送消息: %s", rpcRequest));
                 } else {
                     future1.channel().close();
                     resultFuture.completeExceptionally(future1.cause());
