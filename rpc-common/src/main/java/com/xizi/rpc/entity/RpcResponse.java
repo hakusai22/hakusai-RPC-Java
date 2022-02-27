@@ -23,7 +23,6 @@ public class RpcResponse<T> implements Serializable {
     // 响应数据
     private T data;
 
-
     // 两个静态方法，用于快速生成成功与失败的响应对象。
     // 返回成功
     public static <T> RpcResponse<T> success(T data, String requestId) {
