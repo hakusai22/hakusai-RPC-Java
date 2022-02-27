@@ -12,7 +12,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class UnprocessedRequests {
 
-    private static ConcurrentHashMap<String, CompletableFuture<RpcResponse>> unprocessedResponseFutures = new ConcurrentHashMap<>();
+    //静态 final
+    private static final ConcurrentHashMap<String, CompletableFuture<RpcResponse>> unprocessedResponseFutures = new ConcurrentHashMap<>();
 
     public void put(String requestId, CompletableFuture<RpcResponse> future) {
         unprocessedResponseFutures.put(requestId, future);
