@@ -1,4 +1,4 @@
-# hakusai-RPC-Java
+# Hakusai-RPC-Java
 
 <!-- PROJECT SHIELDS -->
 
