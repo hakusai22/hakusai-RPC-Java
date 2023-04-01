@@ -17,7 +17,7 @@
     <a href="https://github.com/hakusai22/hakusai-RPC-Java/issues">提出新特性</a>
   </p>
 
-![img.png](img.png)
+![img.png](images/language.png)
 
 ## 前言：<br>
 
