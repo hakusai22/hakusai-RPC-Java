@@ -17,13 +17,15 @@ import java.util.List;
 
 /**
  * 通用的解码拦截器
+ * CommonDecoder 继承自 ReplayingDecoder ，与 MessageToByteEncoder 相反，它用于将收到的字节序列还原为实际对象。
  *
  * @author hakusai22@qq.com
  */
-//CommonDecoder 继承自 ReplayingDecoder ，与 MessageToByteEncoder 相反，它用于将收到的字节序列还原为实际对象。
+
 public class CommonDecoder extends ReplayingDecoder {
 
     private static final Logger logger = LoggerFactory.getLogger(CommonDecoder.class);
+
     //魔数
     private static final int MAGIC_NUMBER = 0xCAFEBABE;
 

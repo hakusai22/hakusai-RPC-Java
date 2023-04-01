@@ -1,4 +1,4 @@
-# hakusai-RPC-Java
+# Hakusai-RPC-Java
 
 <!-- PROJECT SHIELDS -->
 
@@ -17,10 +17,14 @@
     <a href="https://github.com/hakusai22/hakusai-RPC-Java/issues">提出新特性</a>
   </p>
 
+![img.png](img.png)
+
 ## 前言：<br>
 
-&emsp;&emsp; 该项目是在大四上半实习阶段所做的项目,可能当时不想写业务的项目找了一些偏底层原理的项目进行学习, 
-最终在Github上找到的RPC轮子相关项目，对项目进行理解+总结+注释+优化。
+&emsp;&emsp; 该项目是在大四上半年在海康威视实习阶段摸鱼时间所做的项目,可能当时不想写业务的项目找了一些偏底层原理的项目进行学习,
+最终在Github上找到的RPC轮子相关项目，当时对RPC的理解非常浅,当时组内服务间的调用也不是使用GRPC相对应的技术,
+而是使用的Spring Cloud OpenFeign那一套, 而RPC调用就像调用本地函数一样浅调用远程服务, 当时就怀着好奇和兴趣进行学习
+,最后对该项目进行理解+总结+注释+优化。
 
 ## 项目介绍:
 

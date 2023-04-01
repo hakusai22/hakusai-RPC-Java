@@ -12,12 +12,14 @@ import io.netty.handler.codec.MessageToByteEncoder;
  * 在传输过程中，我们可以在发送的数据上加上各种必要的数据，形成自定义的协议，
  * 自定义协议与编解码器
  * 传输协议（MRF协议）
+ * <p>
+ * CommonEncoder 继承了MessageToByteEncoder 类，见名知义，就是把 Message（实际要发送的对象）转化成 Byte 数组。
+ * CommonEncoder 的工作很简单，就是把 RpcRequest 或者 RpcResponse 包装成协议包。
  *
  * @author hakusai22@qq.com
  */
 
-// CommonEncoder 继承了MessageToByteEncoder 类，见名知义，就是把 Message（实际要发送的对象）转化成 Byte 数组。
-// CommonEncoder 的工作很简单，就是把 RpcRequest 或者 RpcResponse 包装成协议包。
+
 public class CommonEncoder extends MessageToByteEncoder {
     private static final int MAGIC_NUMBER = 0xCAFEBABE;
     private final CommonSerializer serializer;
